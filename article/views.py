@@ -242,7 +242,12 @@ def article_update(request, id):
             if request.FILES.get('avatar'):
                 article.avatar = request.FILES.get('avatar')
 
-            article.tags.set(*request.POST.get('tags').split(','), clear=True)
+            # 获取标签字符串并拆分成列表
+            tags = request.POST.get('tags').split(',')
+                    
+            # 设置标签，传递标签列表和 clear 参数
+            article.tags.set(tags, clear=True)
+            #article.tags.set(*request.POST.get('tags').split(','), clear=True)
             article.save()
             # 完成后返回到修改后的文章中。需传入文章的 id 值
             return redirect("article:article_detail", id=id)

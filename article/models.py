@@ -5,7 +5,8 @@ from django.contrib.auth.models import User
 # timezone 用于处理时间相关事务。
 from django.utils import timezone
 from django.urls import reverse
-
+#from ckeditor_uploader.fields import RichTextUploadingField
+from ckeditor.fields import RichTextField
 # Django-taggit
 from taggit.managers import TaggableManager
 
@@ -60,8 +61,10 @@ class ArticlePost(models.Model):
 
     # 文章正文。
     # 保存大量文本使用 TextField
-    body = models.TextField()
-
+    # body = models.TextField()
+    # body = RichTextUploadingField()
+    body = RichTextField()
+    
     # 浏览量
     total_views = models.PositiveIntegerField(default=0)
 
@@ -105,7 +108,7 @@ class ArticlePost(models.Model):
             (x, y) = image.size
             new_x = 400
             new_y = int(new_x * (y / x))
-            resized_image = image.resize((new_x, new_y), Image.ANTIALIAS)
+            resized_image = image.resize((new_x, new_y), Image.LANCZOS)
             resized_image.save(self.avatar.path)
 
         return article
